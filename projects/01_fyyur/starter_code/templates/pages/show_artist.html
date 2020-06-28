@@ -70,7 +70,16 @@
 		</div>
 		{% endfor %}
 	</div>
+	<button id="{{ artist.id }}" type="button" onclick="toedit(this, id)"> EDIT </button>
 </section>
-
+<script>
+	function toedit(e, id) {
+		fetch('/artists/' + id + '/edit', {
+			method: 'GET',
+		}).then(function(){
+			location.replace("/artists/"+ id+ "/edit")
+		})
+	}
+</script>
 {% endblock %}
 

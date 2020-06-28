@@ -74,6 +74,25 @@
 		{% endfor %}
 	</div>
 </section>
+<button id="{{ venue.id }}" type="button" onclick="tochange(this, id)"> DELETE </button>
+<button id="{{ venue.id }}" type="button" onclick="toedit(this, id)"> EDIT </button>
+<script>
+	function tochange(e, id) {
+		fetch('/venues/' + id, {
+			method: 'DELETE'
+		}).then(function() {
+			location.replace("/");
+		})
+	}
 
+	function toedit(e, id) {
+		fetch('/venues/' + id + '/edit', {
+			method: 'GET',
+		}).then(function(){
+			location.replace("/venues/"+ id+ "/edit")
+		})
+	}
+</script>
 {% endblock %}
+
 
