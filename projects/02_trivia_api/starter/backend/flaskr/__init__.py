@@ -17,9 +17,16 @@ def create_app(test_config=None):
   @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
 
+  CORS(app)
+
   '''
   @TODO: Use the after_request decorator to set Access-Control-Allow
   '''
+
+  @app.after_request
+  def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
   '''
   @TODO: 
@@ -27,6 +34,16 @@ def create_app(test_config=None):
   for all available categories.
   '''
 
+  @app.route('/categories', methods=['GET']) 
+  def retrieve_categories():
+    # Retrieve cate and then format it
+    categories = Category.query.order_by(Category.id).all()
+    current_categories = [category.format() for category in categories]
+    #Return
+    return jsonify({
+      'success': True,
+      'categories': current_categories
+    })
 
   '''
   @TODO: 
@@ -41,6 +58,28 @@ def create_app(test_config=None):
   Clicking on the page numbers should update the questions. 
   '''
 
+  @app.route('/questions', methods=['GET'])
+  def retrieve_questions():
+    #Retrieve all ques and cate, sort by id
+    questions = Question.query.order_by(Question.id).all()
+    categories = Category.query.order_by(Category.id).all()
+    #Pagination
+    page = request.args.get('page', 1, type=int)
+    start = (page-1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
+    #Format before returning
+    format_questions = [question.format() for question in questions]
+    current_questions = format_questions[start:end]
+    current_categories = [category.format() for category in categories]
+    #Return
+    return jsonify({
+      'success': True,
+      'questions': current_questions,
+      'total_questions': len(questions),
+      'current_category': None,
+      'categories': current_categories
+    })
+
   '''
   @TODO: 
   Create an endpoint to DELETE question using a question ID. 
@@ -48,6 +87,17 @@ def create_app(test_config=None):
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
+
+  @app.route('/questions/<int:question_id>', methods=['DELETE'])
+  def delete_question(question_id):
+    try:
+      question = Question.query.filter(Question.id==question_id).one_or_none()
+
+      if question is None:
+        abort(404)
+      
+      question.delete()
+      
 
   '''
   @TODO: 
