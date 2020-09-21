@@ -294,9 +294,10 @@ def create_app(test_config=None):
       selection = [question.format() for question in questions_list]
       
       # Check if there is actually any question 
-      if len(selection) > 0:
+      if len(selection):
 
         question = random.choice(selection)
+        
         result = {
           'success': True,
           'question': question
@@ -307,7 +308,7 @@ def create_app(test_config=None):
         result = {
           'success': False,
           'question': None
-        }
+        }, 404
         
       #Return
       return jsonify( result )
