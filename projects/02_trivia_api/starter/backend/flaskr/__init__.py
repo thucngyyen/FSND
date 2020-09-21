@@ -261,14 +261,14 @@ def create_app(test_config=None):
   @app.route('/quizzes', methods=['POST'])
   def start_quiz():
     
-    try:
+    #try:
       # Request previous_questions and quiz_category
       body = request.get_json()
-      previous_questions = body["previous_questions"]
+      previous_questions = body.get('previous_quesetions', [])
       quiz_category = body.get('quiz_category', None)
 
       # If quiz_category is included
-      if quiz_category['id']:
+      if quiz_category:
         # If previous_questions exist
         if "previous_questions" in body and len(previous_questions) > 0:
           # Previous_questions exist as well as category
@@ -313,8 +313,8 @@ def create_app(test_config=None):
       #Return
       return jsonify( result )
 
-    except:
-      abort(422)
+    #except:
+     # abort(422)
 
   '''
   @TODO: 

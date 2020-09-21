@@ -69,9 +69,8 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 ```
 
 ### GET '/questions'
-- Fetches a dictionary of categories and questions which includes answers, parent categories, id,
-difficulty and the questions themselves.
-- Request Arguments: None
+- Fetches a dictionary of categories and questions which includes answers, parent categories, id,difficulty and the questions themselves.And questions are paginated by default value of 10
+- Request Arguments: page number
 - Returns: An object with serveral keys:
     + Questions
     + Total questions
@@ -105,7 +104,7 @@ difficulty and the questions themselves.
 ### DELETE '/questions/<question_id>'
 - Delete question according to the given question_id and fetches the appropriate information, including deleted quetion's id.
 - Request Argument: question's id 
-- Returns: a object with serveral keys:
+- Returns: An object with serveral keys:
     + Deleted question's id
     + Current questions in database
     + Total remaining questions
@@ -120,6 +119,176 @@ difficulty and the questions themselves.
 ```
 
 ### POST '/questions'
+- Create a new question in database then fetch its information to the frontend
+- Request Argument: question with answer, difficulty and its category
+- Returns: An object with keys:
+    + Questions
+    + Total_questions
+    + Created question's id
+
+```
+{
+  "created": 25, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }, 
+    {
+      "answer": "Muhammad Ali", 
+      "category": 4, 
+      "difficulty": 1, 
+      "id": 9, 
+      "question": "What boxer's original name is Cassius Clay?"
+    }, 
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 12, 
+      "question": "Who invented Peanut Butter?"
+    }, 
+    {
+      "answer": "Lake Victoria", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }, 
+    {
+      "answer": "The Palace of Versailles", 
+      "category": 3, 
+      "difficulty": 3, 
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 21
+}
+```
+
+### GET 'categories/<category_id>/questions'
+- Fetch a dictionary of questions that belong to the given category
+- Request Argument: category's id
+- Returns: An object that includes 
+    + A list of questions in the current category
+    + Total questions in the list
+
+```
+{
+  "current_category": "1", 
+  "questions": [
+    {
+      "answer": "The Liver", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 20, 
+      "question": "What is the heaviest organ in the human body?"
+    }, 
+    {
+      "answer": "Alexander Fleming", 
+      "category": 1, 
+      "difficulty": 3, 
+      "id": 21, 
+      "question": "Who discovered penicillin?"
+    }, 
+    {
+      "answer": "Blood", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 22, 
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 3
+}
+```
+
+### POST '/questions/search'
+- Search for questions in database and fetch its information to the front end
+- Require Argument: search term 
+- Returns: 
+    + Questions
+    + Total questions
+
+```
+{
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "yea", 
+      "category": null, 
+      "difficulty": null, 
+      "id": 25, 
+      "question": "hello?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
+}
+```
+
+### POST '/quizzes'
+- Fetch a random question that has not been choosen and included in the given category.
+- Request Argument: answered questions and category
+- Returns: 
+    + Question
+    + Answer
+    + Category
+    + Difficulty
+
+```
+{
+  "question": {
+    "answer": "Edward Scissorhands", 
+    "category": 5, 
+    "difficulty": 3, 
+    "id": 6, 
+    "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+  }, 
+  "success": true
+}
+```
 
 
 
