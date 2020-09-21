@@ -77,6 +77,52 @@ difficulty and the questions themselves.
     + Total questions
     + Categories
 
+```
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Scarab", 
+      "category": 4, 
+      "difficulty": 4, 
+      "id": 23, 
+      "question": "Which dung beetle was worshipped by the ancient Egyptians?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
+}
+```
+
+### DELETE '/questions/<question_id>'
+- Delete question according to the given question_id and fetches the appropriate information, including deleted quetion's id.
+- Request Argument: question's id 
+- Returns: a object with serveral keys:
+    + Deleted question's id
+    + Current questions in database
+    + Total remaining questions
+
+```
+{
+  "deleted": 23, 
+  "questions": [], 
+  "success": true, 
+  "total_questions": 0
+}
+```
+
+### POST '/questions'
+
+
+
 ## Tasks
 
 One note before you delve into your tasks: for each endpoint you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior. 
