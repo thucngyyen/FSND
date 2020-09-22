@@ -261,10 +261,10 @@ def create_app(test_config=None):
   @app.route('/quizzes', methods=['POST'])
   def start_quiz():
     
-    #try:
+    try:
       # Request previous_questions and quiz_category
       body = request.get_json()
-      previous_questions = body.get('previous_quesetions', [])
+      previous_questions = body.get('previous_questions', [])
       quiz_category = body.get('quiz_category', None)
 
       # If quiz_category is included
@@ -273,11 +273,11 @@ def create_app(test_config=None):
         if "previous_questions" in body and len(previous_questions) > 0:
           # Previous_questions exist as well as category
           questions_list = Question.query.filter(Question.id.notin_(previous_questions),
-                            Question.category==quiz_category['id']).all()
+                            Question.category==str(quiz_category['id'])).all()
         else:#If previous_questions dont exist
           # Category includes but not previous_questions
           questions_list = Question.query.filter(
-                            Question.category==quiz_category['id']).all()
+                            Question.category==str(quiz_category['id'])).all()
 
       else:#If category is NOT included
         #If previous_questions exists
@@ -291,16 +291,17 @@ def create_app(test_config=None):
           questions_list = Question.query.all()
       
       # Format before returning
-      selection = [question.format() for question in questions_list]
+      selections = [selection.format() for selection in questions_list]
       
       # Check if there is actually any question 
-      if len(selection):
+      if len(selections):
 
-        question = random.choice(selection)
+        question = random.choice(selections)
         
         result = {
           'success': True,
-          'question': question
+          'question': question,
+          'asdf': quiz_category['id']
         }
 
       else:
@@ -313,8 +314,8 @@ def create_app(test_config=None):
       #Return
       return jsonify( result )
 
-    #except:
-     # abort(422)
+    except:
+      abort(422)
 
   '''
   @TODO: 
