@@ -295,25 +295,17 @@ def create_app(test_config=None):
       
       # Check if there is actually any question 
       if len(selections):
-
+        # Select random question
         question = random.choice(selections)
-        
         result = {
           'success': True,
-          'question': question,
-          'asdf': quiz_category['id']
+          'question': question
         }
+      else:# No questoin left, 404
+        abort(404)
 
-      else:
-        
-        result = {
-          'success': False,
-          'question': None
-        }, 404
-        
       #Return
       return jsonify( result )
-
     except:
       abort(422)
 

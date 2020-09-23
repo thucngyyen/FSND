@@ -78,14 +78,12 @@ class TriviaTestCase(unittest.TestCase):
         })
         data = json.loads(res.data) 
 
-        new_question = Question.query.filter(Question.question=='test1').one_or_none()
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
     def test_search_questions_with_result(self):
         res = self.client().post('/questions/search', json={
-            'searchTerm': 'test1'
+            'searchTerm': 'what'
         })
         data = json.loads(res.data) 
 
@@ -149,6 +147,3 @@ class TriviaTestCase(unittest.TestCase):
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
-
-
-    
