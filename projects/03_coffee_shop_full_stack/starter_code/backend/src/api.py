@@ -31,14 +31,14 @@ CORS(app)
 def get_drinks():
     try:
         all_drinks = Drink.query.all() 
-        drinks = []
-        for drink in all_drinks:
-            drinks.append( drink.short() )
+        drinks = [i.short() for i in all_drinks]
+
         return jsonify({
             "success": True,
             "drinks": drinks
         })
-    except:
+    except Exception as i:
+        print(i)
         abort(404)
 
 '''
@@ -77,11 +77,11 @@ def get_drinks_detail(jwt):
 @app.route("/drinks", methods=['POST'])
 @requires_auth("post:drinks")
 def post_drinks(jwt):
-    body = request.get_json()
-    title = body.get('title', None)
-    recipe = body.get('recipe', None)
+    #body = request.get_json()
+    title  = request.json['title']
+    recipe = request.json['recipe']
 
-    if (title is None or recipe is None): abort(400)
+    if (not title or not recipe): abort(400)
 
     try:
         new_drink = Drink( title=title, recipe=json.dumps(recipe) )
@@ -145,10 +145,11 @@ def patch_drinks(jwt, id):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-app.route("/drinks/<int:id>", methods=["DELETE"])
+@app.route("/drinks/<int:id>", methods=["DELETE"])
 @requires_auth("delete:drinks")
 def delete_drink(jwt, id):
     try:
+        print('test')
         drink = Drink.query.get(id)
         print(drink)
         drink.delete()
